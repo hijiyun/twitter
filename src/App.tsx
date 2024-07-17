@@ -7,7 +7,8 @@ import Layout from "./components/Layout";
 import Home from "./routes/Home";
 import Profile from "./routes/Profile";
 import Login from "./routes/Login";
-import CreateAccount from "./components/CreateAccount";
+import CreateAccount from "./routes/CreateAccount";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const S = {
   Wrapper: styled.div`
@@ -34,7 +35,14 @@ function App() {
   return (
     <S.Wrapper>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="" element={<Home />} />
           <Route path="profile" element={<Profile />} />
         </Route>
