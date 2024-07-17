@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const S = {
@@ -12,6 +11,7 @@ const S = {
     font-size: 24px;
   `,
 };
+
 const LoadingScreen = () => {
   return (
     <S.Wrapper>
