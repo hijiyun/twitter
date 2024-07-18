@@ -26,7 +26,7 @@ const S = {
 const GithubBtn = () => {
   const navigate = useNavigate();
 
-  const onClick = async () => {
+  const githubLogin = async () => {
     try {
       const provider = new GithubAuthProvider();
       await signInWithPopup(auth, provider);
@@ -37,7 +37,7 @@ const GithubBtn = () => {
   };
 
   return (
-    <S.Button onClick={onClick}>
+    <S.Button onClick={githubLogin}>
       <S.Logo src="/githubLogo.png" />
       깃허브로 로그인
     </S.Button>

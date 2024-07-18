@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import S from "../components/authComponents";
 import GithubBtn from "../components/GithubBtn";
+import GoogleBtn from "../components/GoogleBtn";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,13 +61,16 @@ const Login = () => {
           onChange={onChange}
           required
         />
-        <S.Input type="submit" value={isLoading ? "Loading ..." : "버튼"} />
+        <S.Input type="submit" value={isLoading ? "Loading ..." : "login"} />
       </S.Form>
       {error !== "" ? <S.Error>{error}</S.Error> : null}
       <S.Switcher>
         계정이 없으신가요? <Link to={"/create-account"}>만들러가기 &rarr;</Link>
       </S.Switcher>
-      <GithubBtn />
+      <S.SocialLogin>
+        <GithubBtn />
+        <GoogleBtn />
+      </S.SocialLogin>
     </S.Wrapper>
   );
 };

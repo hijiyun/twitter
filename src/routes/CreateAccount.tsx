@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import S from "../components/authComponents";
 import GithubBtn from "../components/GithubBtn";
+import GoogleBtn from "../components/GoogleBtn";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
@@ -78,14 +79,17 @@ const CreateAccount = () => {
           onChange={onChange}
           required
         />
-        <S.Input type="submit" value={isLoading ? "Loading ..." : "버튼"} />
+        <S.Input type="submit" value={isLoading ? "Loading ..." : "signup"} />
       </S.Form>
       {error !== "" ? <S.Error>{error}</S.Error> : null}
       <S.Switcher>
         이미 계정이 있으신가요?{" "}
         <Link to={"/login"}>로그인 하러가기 &rarr;</Link>
       </S.Switcher>
-      <GithubBtn />
+      <S.SocialLogin>
+        <GithubBtn />
+        <GoogleBtn />
+      </S.SocialLogin>
     </S.Wrapper>
   );
 };
