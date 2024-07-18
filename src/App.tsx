@@ -22,6 +22,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const init = async () => {
+    // 사용자가 로그인을 했는지 안했는지, 그리고 누구인지에 대한 정보를 기다리는 거임 !
     await auth.authStateReady();
     setIsLoading(false);
   };
