@@ -28,6 +28,7 @@ const USER_S = {
     font-size: 16px;
     &[type="submit"] {
       cursor: pointer;
+      background-color: #1d9bf0;
       &:hover {
         opacity: 0.8;
       }
@@ -42,6 +43,10 @@ const USER_S = {
     a {
       color: #1d9bf0;
     }
+  `,
+  SocialLogin: styled.div`
+    display: flex;
+    gap: 30px;
   `,
 };
 
