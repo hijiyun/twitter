@@ -1,5 +1,8 @@
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import styled from "styled-components";
+import { auth, db, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const S = {
   Form: styled.form`
@@ -60,19 +63,58 @@ const PostTweetForm = () => {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
   };
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e?.target;
-    console.log(files);
     if (files && files.length === 1) {
-      setFile(files[0]);
+      const file = files[0];
+      if (file.size < 1048576) {
+        // 1MB = 1048576 bytes
+        setFile(file);
+      } else {
+        alert("파일 크기는 1MB 미만이어야 합니다.");
+      }
     }
   };
+
+  const onSubmitBtn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+
+    try {
+      setLoading(true);
+      const doc = await addDoc(collection(db, "tweet"), {
+        tweet,
+        createdAt: Date.now(),
+        userName: user.displayName || "Anonymous",
+        userId: user.uid,
+      });
+      if (file) {
+        const locationRef = ref(storage, `tweet/${user.uid}/${doc.id}`);
+        const result = await uploadBytes(locationRef, file);
+        const url = await getDownloadURL(result.ref);
+        updateDoc(doc, {
+          photo: url,
+        });
+      }
+      setTweet("");
+      setFile(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <S.Form>
+    <S.Form onSubmit={onSubmitBtn}>
       <S.TextArea
+        required
         rows={5}
         maxLength={180}
         onChange={onChange}
